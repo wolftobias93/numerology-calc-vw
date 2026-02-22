@@ -1,21 +1,234 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de" data-bs-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <title>Numerology Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title>Numerologierechner</title>
+  <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #1a1a2e 100%);
+      min-height: 100vh;
+    }
+
+    /* Glassmorphism cards */
+    .card {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.55);
+    }
+    .card-title { font-weight: bold; }
+
+    /* Tabs */
+    .nav-tabs {
+      border-bottom-color: rgba(255, 255, 255, 0.15);
+    }
+    .nav-tabs .nav-link {
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .nav-tabs .nav-link.active {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.15) rgba(255, 255, 255, 0.15) transparent;
+      color: #fff;
+    }
+
+    /* SVG */
+    .num-circle { fill: #2d5f8a; stroke: #7ec8e3; stroke-width: 2; }
+    .num-text   { font: 700 18px system-ui, Arial; fill: #ffffff; dominant-baseline: middle; text-anchor: middle; }
+    .tri-line   { stroke: #7ec8e3; stroke-width: 2; fill: none; }
+    .tri-label  { font: 600 12px system-ui, Arial; fill: rgba(255,255,255,0.6); letter-spacing: .2em; }
+    .tri-svg    { width: 160px; height: auto; }
+  </style>
 </head>
 <body>
-  <h1>Numerology Calculator</h1>
+  <div class="container py-3">
+    <h1 class="mb-3">Numerologierechner</h1>
 
-  <label>Vorname: <input id="name" type="text"></label><br>
-  <label>Nachname: <input id="surname" type="text"></label><br>
-  <label>Tag: <input id="day" type="number" min="1" max="31"></label><br>
-  <label>Monat: <input id="month" type="number" min="1" max="12"></label><br>
-  <label>Jahr: <input id="year" type="number"></label><br><br>
-  <button onclick="calculate()">Calculate</button>
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <a class="nav-link active" role="tab" data-bs-toggle="tab" href="#tab-1">Pythagoreisch</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" role="tab" data-bs-toggle="tab" href="#tab-2">Kabbalah</a>
+      </li>
+    </ul>
 
-  <pre id="output"></pre>
+    <div class="tab-content pt-3">
+      <div class="tab-pane active" role="tabpanel" id="tab-1">
 
+    <!-- Input row -->
+    <div class="row g-2 mb-4 align-items-end">
+      <div class="col-3">
+        <label class="form-label">Vorname(n)</label>
+        <input id="name" type="text" class="form-control">
+      </div>
+      <div class="col-3">
+        <label class="form-label">Nachname</label>
+        <input id="surname" type="text" class="form-control">
+      </div>
+      <div class="col-auto">
+        <label class="form-label">Geburtsdatum</label>
+        <input id="dob" type="date" class="form-control">
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-primary" onclick="calculate()">Berechnen</button>
+      </div>
+    </div>
+
+    <!-- Results row -->
+    <div class="row g-3 d-none" id="results">
+
+      <!-- LEFT COLUMN -->
+      <div class="col-4">
+
+        <div class="card mb-2">
+          <div class="card-body">
+            <h6 class="card-title">Vorname / Nachname</h6>
+            <p class="card-text" id="out-name">—</p>
+          </div>
+        </div>
+
+        <div class="card mb-2">
+          <div class="card-body">
+            <h6 class="card-title">Schicksalszahl</h6>
+            <p class="card-text" id="out-schicksalszahl">—</p>
+          </div>
+        </div>
+
+        <div class="card mb-2">
+          <div class="card-body">
+            <h6 class="card-title">Herzzahl</h6>
+            <p class="card-text" id="out-herzzahl">—</p>
+          </div>
+        </div>
+
+        <div class="card mb-2">
+          <div class="card-body">
+            <h6 class="card-title">Persönlichkeitszahl</h6>
+            <p class="card-text" id="out-persoenlichkeit">—</p>
+          </div>
+        </div>
+
+        <div class="card mb-2">
+          <div class="card-body">
+            <h6 class="card-title">Machtzahl</h6>
+            <p class="card-text" id="out-machtzahl">—</p>
+          </div>
+        </div>
+
+        <div class="card mb-2">
+          <div class="card-body text-center">
+            <h6 class="card-title">Herausforderungen</h6>
+            <svg viewBox="0 0 200 220" class="tri-svg" aria-label="Herausforderungen">
+              <path class="tri-line" d="M55 40 L95 200" />
+              <path class="tri-line" d="M145 40 L105 200" />
+              <path class="tri-line" d="M70 75 L100 110 L130 75" />
+              <path class="tri-line" d="M100 130 L100 165" />
+              <circle class="num-circle" cx="70"  cy="75"  r="20" />
+              <text class="num-text" id="ch-1" x="70"  y="75" >–</text>
+              <circle class="num-circle" cx="130" cy="75"  r="20" />
+              <text class="num-text" id="ch-2" x="130" y="75" >–</text>
+              <circle class="num-circle" cx="100" cy="120" r="20" />
+              <text class="num-text" id="ch-3" x="100" y="120">–</text>
+              <circle class="num-circle" cx="100" cy="175" r="20" />
+              <text class="num-text" id="ch-4" x="100" y="175">–</text>
+              <!-- <text class="tri-label" x="100" y="210" text-anchor="middle">MONAT&nbsp;TAG&nbsp;JAHR</text> -->
+            </svg>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- MIDDLE COLUMN -->
+      <div class="col-4">
+
+        <div class="card mb-2">
+          <div class="card-body">
+            <h6 class="card-title">Karmische Leiste</h6>
+            <p class="card-text" id="out-karmic" style="font-family:monospace;white-space:pre">—</p>
+            <small class="text-muted">
+              Talent: <strong><span id="out-talent">—</span></strong>
+              &nbsp;|&nbsp;
+              Laster: <strong><span id="out-laster">—</span></strong>
+            </small>
+          </div>
+        </div>
+
+        <div class="card mb-2">
+          <div class="card-body text-center">
+            <h6 class="card-title">Höhepunkte</h6>
+            <!-- Λ triangle: top=p4, middle=p3, bottom-left=p1, bottom-right=p2 -->
+            <svg viewBox="0 0 200 220" class="tri-svg" aria-label="Höhepunkte">
+              <path class="tri-line" d="M60 200 L100 35 L140 200" />
+              <path class="tri-line" d="M100 55 L100 175" />
+              <path class="tri-line" d="M100 145 L75 175" />
+              <path class="tri-line" d="M100 145 L125 175" />
+              <circle class="num-circle" cx="100" cy="55"  r="20" />
+              <text class="num-text" id="pk-1" x="100" y="55" >–</text>
+              <circle class="num-circle" cx="100" cy="115" r="20" />
+              <text class="num-text" id="pk-2" x="100" y="115">–</text>
+              <circle class="num-circle" cx="75"  cy="175" r="20" />
+              <text class="num-text" id="pk-3" x="75"  y="175">–</text>
+              <circle class="num-circle" cx="125" cy="175" r="20" />
+              <text class="num-text" id="pk-4" x="125" y="175">–</text>
+              <!-- <text class="tri-label" x="100" y="210" text-anchor="middle">MONAT&nbsp;TAG&nbsp;JAHR</text> -->
+            </svg>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="col-4">
+
+        <div class="card mb-2">
+          <div class="card-body">
+            <h6 class="card-title">Lebenszahl</h6>
+            <p class="card-text" id="out-lebenszahl">—</p>
+          </div>
+        </div>
+
+        <div class="card mb-2">
+          <div class="card-body">
+            <h6 class="card-title">Einstellungszahl</h6>
+            <p class="card-text" id="out-einstellungszahl">—</p>
+          </div>
+        </div>
+
+        <div class="card mb-2">
+          <div class="card-body">
+            <h6 class="card-title">Jahreszahl</h6>
+            <p class="card-text" id="out-jahreszahl">—</p>
+          </div>
+        </div>
+
+        <div class="card mb-2">
+          <div class="card-body">
+            <h6 class="card-title">Bedürfnisebene</h6>
+            <p class="card-text" id="out-beduerfnisebene" style="font-family:monospace;white-space:pre">—</p>
+          </div>
+        </div>
+
+      </div>
+
+        </div><!-- /.row results -->
+      </div><!-- /#tab-1 -->
+
+      <div class="tab-pane" role="tabpanel" id="tab-2">
+        <p class="text-muted">Kommt noch.</p>
+      </div><!-- /#tab-2 -->
+
+    </div><!-- /.tab-content -->
+  </div><!-- /.container -->
+
+  <script src="assets/bootstrap/js/bootstrap.min.js"></script>
   <script>
     const charMap = {
       a:1, b:2, c:3, d:4, e:5, f:6, g:7, h:8, i:9,
@@ -51,60 +264,56 @@
       return str.split('').filter(c => !vowels.has(c) && /[a-z]/.test(c)).join('');
     }
 
+    function set(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = (value == null) ? '—' : String(value);
+    }
+
     function calculate() {
       const name    = document.getElementById('name').value.trim().toLowerCase().replace(/\s/g, '');
       const surname = document.getElementById('surname').value.trim().toLowerCase().replace(/\s/g, '');
-      const day     = parseInt(document.getElementById('day').value);
-      const month   = parseInt(document.getElementById('month').value);
-      const year    = parseInt(document.getElementById('year').value);
-
-      const lines = [];
-      const log = (label, value) => lines.push(`${label}: ${value}`);
+      const [year, month, day] = document.getElementById('dob').value.split('-').map(Number);
+      document.getElementById('results').classList.remove('d-none');
 
       // Life Path
       const lpTotal = numSum(day) + numSum(month) + numSum(year);
       const lifePath = reduce(lpTotal);
-      log('Lebenszahl', `${numSum(day)} + ${numSum(month)} + ${numSum(year)} = ${lpTotal} → ${lifePath}`);
+      set('out-lebenszahl', `${numSum(day)} + ${numSum(month)} + ${numSum(year)} = ${lpTotal} → ${lifePath}`);
 
       // Attitude
       const attTotal = day + month;
       const attitude = reduce(attTotal);
-      log('Einstellungszahl', `${day} + ${month} = ${attTotal} → ${attitude}`);
+      set('out-einstellungszahl', `${day} + ${month} = ${attTotal} → ${attitude}`);
 
       // Personal Year
       const currentYear = new Date().getFullYear();
       const yearNoZeros = removeZeros(currentYear);
       const pyTotal = numSum(day) + numSum(month) + numSum(yearNoZeros);
       const personalYear = reduce(pyTotal);
-      log('Jahreszahl', `${currentYear} → ${personalYear}`);
-
-      lines.push('');
+      set('out-jahreszahl', `${currentYear} → ${personalYear}`);
 
       // Name / Destiny
       const nameVal    = reduce(numSum(name));
       const surnameVal = reduce(numSum(surname));
-      log('Vorname', `${numSum(name)} → ${nameVal}`);
-      log('Nachname', `${numSum(surname)} → ${surnameVal}`);
+      set('out-name', `${name}: ${numSum(name)} → ${nameVal}\n${surname}: ${numSum(surname)} → ${surnameVal}`);
       const destiny = reduce(nameVal + surnameVal);
-      log('Schicksalszahl', `${nameVal} + ${surnameVal} = ${nameVal + surnameVal} → ${destiny}`);
+      set('out-schicksalszahl', `${nameVal} + ${surnameVal} = ${nameVal + surnameVal} → ${destiny}`);
 
       // Heart & Personality
       const fullName = name + surname;
       const heartTotal = numSum(extractVowels(fullName));
       const heart = reduce(heartTotal);
-      log('Herzzahl', `Vokale="${extractVowels(fullName)}" → ${heartTotal} → ${heart}`);
+      set('out-herzzahl', `${heartTotal} → ${heart}`);
 
       const persTotal = numSum(extractConsonants(fullName));
       const personality = reduce(persTotal);
-      log('Persönlichkeitszahl', `Konsonanten="${extractConsonants(fullName)}" → ${persTotal} → ${personality}`);
+      set('out-persoenlichkeit', `${persTotal} → ${personality}`);
 
       // Might
       const might = reduce(lifePath + destiny);
-      log('Machtzahl', `${lifePath} + ${destiny} = ${lifePath + destiny} → ${might}`);
+      set('out-machtzahl', `${lifePath} + ${destiny} = ${lifePath + destiny} → ${might}`);
 
-      lines.push('');
-
-      // Challenge Numbers
+      // Challenge Numbers → V triangle: top-left=c1, top-right=c2, middle=c3, bottom=c4
       const rDay   = reduce(numSum(day));
       const rMonth = reduce(numSum(month));
       const rYear  = reduce(numSum(year));
@@ -112,16 +321,20 @@
       const c2 = Math.abs(rDay - rYear);
       const c3 = Math.abs(c1 - c2);
       const c4 = Math.abs(rMonth - rYear);
-      log('Herausforderungen', `${c1} | ${c2} | ${c3} | ${c4}`);
+      set('ch-1', c1);
+      set('ch-2', c2);
+      set('ch-3', c3);
+      set('ch-4', c4);
 
-      // Pinnacle Numbers
+      // Pinnacle Numbers → Λ triangle: bottom-left=p1, bottom-right=p2, middle=p3, top=p4
       const p1 = numSum(rDay + rMonth);
       const p2 = numSum(rDay + rYear);
       const p3 = numSum(p1 + p2);
       const p4 = numSum(rMonth + rYear);
-      log('Höhepunkte', `${p1} | ${p2} | ${p3} | ${p4}`);
-
-      lines.push('');
+      set('pk-1', p4); // top
+      set('pk-2', p3); // middle
+      set('pk-3', p1); // bottom-left (Monat+Tag)
+      set('pk-4', p2); // bottom-right (Tag+Jahr)
 
       // Karmic Line
       const numbers = fullName.split('').map(c => charMap[c] ?? null).filter(n => n !== null);
@@ -134,17 +347,22 @@
       const lessonsSum = lessons.reduce((s, n) => s + n, 0);
       const lessonsReduced = reduce(lessonsSum);
 
-      lines.push('Karmische Leiste:');
-      for (let i = 1; i <= 9; i++) lines.push(`  ${i}: ${'●'.repeat(count[i]) || '-'} (${count[i]})`);
-      log('  Talent', talent);
-      log('  Laster', `${lessons.join(', ')} → Summe ${lessonsSum} → ${lessonsReduced}`);
-      lines.push('');
-      log('  Bedürfnisebene — Mentos (1+8)',    count[1] + count[8]);
-      log('  Bedürfnisebene — Physis (4+5)',    count[4] + count[5]);
-      log('  Bedürfnisebene — Emotion (2+3+6)', count[2] + count[3] + count[6]);
-      log('  Bedürfnisebene — Intuition (7+9)', count[7] + count[9]);
+      const karmicLines = [];
+      for (let i = 1; i <= 9; i++) {
+        karmicLines.push(`${i}: ${'●'.repeat(count[i]) || '–'} (${count[i]})`);
+      }
+      set('out-karmic', karmicLines.join('\n'));
+      set('out-talent', talent);
+      set('out-laster', lessons.length ? `${lessons.join(', ')} → ${lessonsSum} → ${lessonsReduced}` : 'keine');
 
-      document.getElementById('output').textContent = lines.join('\n');
+      // Bedürfnisebene
+      const beduerfnis = [
+        `Mentos    (1+8): ${count[1] + count[8]}`,
+        `Physis    (4+5): ${count[4] + count[5]}`,
+        `Emotion (2+3+6): ${count[2] + count[3] + count[6]}`,
+        `Intuition (7+9): ${count[7] + count[9]}`,
+      ].join('\n');
+      set('out-beduerfnisebene', beduerfnis);
     }
   </script>
 </body>

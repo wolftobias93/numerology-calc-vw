@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Numerology Triangles</title>
+  <style>
+    .tri-wrap { max-width: 520px; }
+    .tri-card { background: #fff; }
+    .num-circle { fill: #bfe3f2; stroke: #2b2b2b; stroke-width: 2; }
+    .num-text { font: 700 18px system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #111; dominant-baseline: middle; text-anchor: middle; }
+    .tri-line { stroke: #2b2b2b; stroke-width: 2; fill: none; }
+    .tri-label { font: 600 12px system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #111; letter-spacing: .2em; }
+    .tri-title { font: 700 14px system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #111; }
+  </style>
+</head>
+<body class="bg-light">
+  <div class="container py-4 tri-wrap">
+    <div class="row g-3">
+      <div class="col-12 col-md-6">
+        <div class="card tri-card shadow-sm">
+          <div class="card-body">
+            <div class="fw-bold mb-2">HERAUSFORDERUNGEN</div>
+            <!-- Challenges triangle -->
+            <svg id="tri-challenges" viewBox="0 0 200 220" class="w-100" aria-label="Challenges triangle">
+              <!-- outer V lines -->
+              <path class="tri-line" d="M55 40 L95 200" />
+              <path class="tri-line" d="M145 40 L105 200" />
+
+              <!-- connectors -->
+              <path class="tri-line" d="M70 75 L100 110 L130 75" />
+              <path class="tri-line" d="M100 130 L100 165" />
+
+              <!-- circles -->
+              <circle class="num-circle" cx="70" cy="75" r="20" />
+              <text class="num-text" id="ch-1" x="70" y="75">5</text>
+
+              <circle class="num-circle" cx="130" cy="75" r="20" />
+              <text class="num-text" id="ch-2" x="130" y="75">1</text>
+
+              <circle class="num-circle" cx="100" cy="120" r="20" />
+              <text class="num-text" id="ch-3" x="100" y="120">4</text>
+
+              <circle class="num-circle" cx="100" cy="175" r="20" />
+              <text class="num-text" id="ch-4" x="100" y="175">6</text>
+
+              <text class="tri-label" x="100" y="210" text-anchor="middle">MONAT&nbsp;TAG&nbsp;JAHR</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <div class="card tri-card shadow-sm">
+          <div class="card-body">
+            <div class="fw-bold mb-2">HÖHEPUNKTE</div>
+            <!-- Peaks triangle -->
+            <svg id="tri-peaks" viewBox="0 0 200 220" class="w-100" aria-label="Peaks triangle">
+              <!-- outer A lines -->
+              <path class="tri-line" d="M60 200 L100 35 L140 200" />
+
+              <!-- vertical spine -->
+              <path class="tri-line" d="M100 55 L100 175" />
+
+              <!-- connectors to bottom circles -->
+              <path class="tri-line" d="M100 145 L75 175" />
+              <path class="tri-line" d="M100 145 L125 175" />
+
+              <!-- circles: top, mid, bottom-left, bottom-right -->
+              <circle class="num-circle" cx="100" cy="55" r="20" />
+              <text class="num-text" id="pk-1" x="100" y="55">3</text>
+
+              <circle class="num-circle" cx="100" cy="115" r="20" />
+              <text class="num-text" id="pk-2" x="100" y="115">2</text>
+
+              <circle class="num-circle" cx="75" cy="175" r="20" />
+              <text class="num-text" id="pk-3" x="75" y="175">4</text>
+
+              <circle class="num-circle" cx="125" cy="175" r="20" />
+              <text class="num-text" id="pk-4" x="125" y="175">7</text>
+
+              <text class="tri-label" x="100" y="210" text-anchor="middle">MONAT&nbsp;TAG&nbsp;JAHR</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <svg viewBox="0 0 200 220" class="w-100">
+  <g transform="translate(0,220) scale(1,-1)">
+    <!-- ORIGINAL Herausforderungen CONTENT UNCHANGED -->
+
+    <!-- outer V lines -->
+    <path class="tri-line" d="M55 40 L95 200" />
+    <path class="tri-line" d="M145 40 L105 200" />
+
+    <!-- connectors -->
+    <path class="tri-line" d="M70 75 L100 110 L130 75" />
+    <path class="tri-line" d="M100 130 L100 165" />
+
+    <!-- circles -->
+    <circle class="num-circle" cx="70" cy="75" r="20" />
+    <text class="num-text" x="70" y="75">5</text>
+
+    <circle class="num-circle" cx="130" cy="75" r="20" />
+    <text class="num-text" x="130" y="75">1</text>
+
+    <circle class="num-circle" cx="100" cy="120" r="20" />
+    <text class="num-text" x="100" y="120">4</text>
+
+    <circle class="num-circle" cx="100" cy="175" r="20" />
+    <text class="num-text" x="100" y="175">6</text>
+  </g>
+
+  <!-- label stays unflipped -->
+  <text class="tri-label" x="100" y="210" text-anchor="middle">
+    MONAT&nbsp;TAG&nbsp;JAHR
+  </text>
+</svg>
+
+    <!-- Demo controls -->
+    <div class="card shadow-sm mt-3">
+      <div class="card-body">
+        <div class="d-flex gap-2 flex-wrap">
+          <button class="btn btn-primary btn-sm" id="btn-demo">Set demo values</button>
+          <button class="btn btn-outline-secondary btn-sm" id="btn-clear">Clear</button>
+        </div>
+        <div class="text-muted small mt-2">
+          You’d call <code>setChallenges([a,b,c,d])</code> and <code>setPeaks([a,b,c,d])</code> from your calculation code.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function setText(id, value) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = (value === null || value === undefined) ? "" : String(value);
+    }
+
+    // For the left triangle: top-left, top-right, middle, bottom
+    function setChallenges([c1, c2, c3, c4]) {
+      setText("ch-1", c1);
+      setText("ch-2", c2);
+      setText("ch-3", c3);
+      setText("ch-4", c4);
+    }
+
+    // For the right triangle: top, middle, bottom-left, bottom-right
+    function setPeaks([p1, p2, p3, p4]) {
+      setText("pk-1", p1);
+      setText("pk-2", p2);
+      setText("pk-3", p3);
+      setText("pk-4", p4);
+    }
+
+    // Demo buttons
+    document.getElementById("btn-demo").addEventListener("click", () => {
+      setChallenges([5, 1, 4, 6]);
+      setPeaks([3, 2, 4, 7]);
+    });
+
+    document.getElementById("btn-clear").addEventListener("click", () => {
+      setChallenges([null, null, null, null]);
+      setPeaks([null, null, null, null]);
+    });
+  </script>
+</body>
+</html>
