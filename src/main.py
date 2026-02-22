@@ -210,19 +210,85 @@ def calculate_sheet_one(name, surname, dob_day, dob_month, dob_year):
     personality = personality_number(name + surname)
     might = might_number(life_path, destiny)
     karmic_line(name, surname)
+    
+    
+def life_completion_number(dob_day, dob_month, dob_year):
+    total = num_sum(dob_day) + num_sum(dob_month) + num_sum(dob_year)
+    res = reduce(total)
+    print(f"Life Completion Number from {dob_day}/{dob_month}/{dob_year} is: {total}|{res}")
+    return res
+    
+def earthly_karma_number(dob_year):
+    total = num_sum(dob_year)
+    res = reduce(total)
+    print(f"Earthly Karma from {dob_year} is: {total}|{res}")
+    return res
+
+def companion_number(dob_year):
+    # only the last two digits
+    last_two_digits = dob_year % 100
+    return last_two_digits
+
+def disposition_number(dob_day, dob_month, dob_year):
+    print(f"Geist/Wille/Ego: {dob_day}");
+    print(f"Seele/Gefühl: {dob_month}");
+    first_value = dob_day + dob_month
+    
+    # plus first (=leftmost) digit of dob_year
+    first_digit = int(str(dob_year)[0])
+    second_value = first_value + first_digit
+    
+    # + plus second digit of dob_year
+    second_digit = int(str(dob_year)[1])
+    third_value = second_value + second_digit
+    
+    # + plus third digit of dob_year
+    third_digit = int(str(dob_year)[2])
+    fourth_value = third_value + third_digit
+    
+    # + plus fourth digit of dob_year
+    fourth_digit = int(str(dob_year)[3])
+    final_value = fourth_value + fourth_digit
+    
+    print(f"Lebensthema: {first_value} + {first_digit} = {second_value} + {second_digit} = {third_value} + {third_digit} = {fourth_value} + {fourth_digit} = {final_value}")
+    
+    print(f"Lebensaufgabe: {dob_day}; {num_sum(first_value)}; {num_sum(second_value)}; {num_sum(third_value)}; {num_sum(fourth_value)}; {num_sum(final_value)}")
+    
+    karma = dob_day + num_sum(first_value) + num_sum(second_value)
+    print(f"Karma: {karma} | {reduce(karma)}")
+    
+    embryo = num_sum(third_value) 
+    print(f"Embryo: {embryo}")
+    
+    task = num_sum(fourth_value) + num_sum(final_value)
+    print(f"Task: {task} | {reduce(task)}")
+    
+    solution = dob_day + num_sum(first_value) + num_sum(second_value) + num_sum(third_value) + num_sum(fourth_value) + num_sum(final_value)
+    print(f"Solution: {solution} | {num_sum(solution)}")
+    
+
+def calculate_sheet_two(dob_day, dob_month, dob_year):
+    life_completion = life_completion_number(dob_day, dob_month, dob_year)
+    earthly_karma = earthly_karma_number(dob_year)
+    companion = companion_number(dob_year)
+    disposition = disposition_number(dob_day, dob_month, dob_year)
+    return
+
+
 
 def main():
     name = "ILONA"
     surname = "PERMADINGER"
-    dob_day = 22
-    dob_month = 9
-    dob_year = 1983
+    dob_day = 10
+    dob_month = 7
+    dob_year = 1989
 
     # Convert to lowercase and remove spaces
     name = name.replace(" ", "").lower()
     surname = surname.replace(" ", "").lower()
 
-    calculate_sheet_one(name, surname, dob_day, dob_month, dob_year)
+    # calculate_sheet_one(name, surname, dob_day, dob_month, dob_year)
+    calculate_sheet_two(dob_day, dob_month, dob_year)
 
 if __name__ == "__main__":
     main()

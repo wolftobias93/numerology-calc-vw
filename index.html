@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de" data-bs-theme="dark">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -20,19 +21,25 @@
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+
     .card:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.55);
     }
-    .card-title { font-weight: bold; }
+
+    .card-title {
+      font-weight: bold;
+    }
 
     /* Tabs */
     .nav-tabs {
       border-bottom-color: rgba(255, 255, 255, 0.15);
     }
+
     .nav-tabs .nav-link {
       color: rgba(255, 255, 255, 0.6);
     }
+
     .nav-tabs .nav-link.active {
       background: rgba(255, 255, 255, 0.1);
       border-color: rgba(255, 255, 255, 0.15) rgba(255, 255, 255, 0.15) transparent;
@@ -40,30 +47,43 @@
     }
 
     /* SVG */
-    .num-circle { fill: #2d5f8a; stroke: #7ec8e3; stroke-width: 2; }
-    .num-text   { font: 700 18px system-ui, Arial; fill: #ffffff; dominant-baseline: middle; text-anchor: middle; }
-    .tri-line   { stroke: #7ec8e3; stroke-width: 2; fill: none; }
-    .tri-label  { font: 600 12px system-ui, Arial; fill: rgba(255,255,255,0.6); letter-spacing: .2em; }
-    .tri-svg    { width: 160px; height: auto; }
+    .num-circle {
+      fill: #2d5f8a;
+      stroke: #7ec8e3;
+      stroke-width: 2;
+    }
+
+    .num-text {
+      font: 700 18px system-ui, Arial;
+      fill: #ffffff;
+      dominant-baseline: middle;
+      text-anchor: middle;
+    }
+
+    .tri-line {
+      stroke: #7ec8e3;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .tri-label {
+      font: 600 12px system-ui, Arial;
+      fill: rgba(255, 255, 255, 0.6);
+      letter-spacing: .2em;
+    }
+
+    .tri-svg {
+      width: 160px;
+      height: auto;
+    }
   </style>
 </head>
+
 <body>
   <div class="container py-3">
     <h1 class="mb-3">Numerologierechner</h1>
 
-    <ul class="nav nav-tabs" role="tablist">
-      <li class="nav-item" role="presentation">
-        <a class="nav-link active" role="tab" data-bs-toggle="tab" href="#tab-1">Pythagoreisch</a>
-      </li>
-      <li class="nav-item" role="presentation">
-        <a class="nav-link" role="tab" data-bs-toggle="tab" href="#tab-2">Kabbalah</a>
-      </li>
-    </ul>
-
-    <div class="tab-content pt-3">
-      <div class="tab-pane active" role="tabpanel" id="tab-1">
-
-    <!-- Input row -->
+    <!-- Shared inputs -->
     <div class="row g-2 mb-4 align-items-end">
       <div class="col-3">
         <label class="form-label">Vorname(n)</label>
@@ -78,151 +98,255 @@
         <input id="dob" type="date" class="form-control">
       </div>
       <div class="col-auto">
-        <button class="btn btn-primary" onclick="calculate()">Berechnen</button>
+        <button class="btn btn-primary" onclick="calculateAll()">Berechnen</button>
+        <button class="btn btn-outline-secondary ms-2" onclick="resetAll()">Zurücksetzen</button>
       </div>
     </div>
 
-    <!-- Results row -->
-    <div class="row g-3 d-none" id="results">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" role="tab" data-bs-toggle="tab" href="#tab-1">Pythagoreisch</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link active" role="tab" data-bs-toggle="tab" href="#tab-2">Kabbalah</a>
+      </li>
+    </ul>
 
-      <!-- LEFT COLUMN -->
-      <div class="col-4">
+    <div class="tab-content pt-3">
+      <div class="tab-pane" role="tabpanel" id="tab-1">
 
-        <div class="card mb-2">
-          <div class="card-body">
-            <h6 class="card-title">Vorname / Nachname</h6>
-            <p class="card-text" id="out-name">—</p>
+        <!-- Results row -->
+        <div class="row g-3 d-none" id="results">
+
+          <!-- LEFT COLUMN -->
+          <div class="col-4">
+
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Vorname / Nachname</h6>
+                <p class="card-text" id="out-name">—</p>
+              </div>
+            </div>
+
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Schicksalszahl</h6>
+                <p class="card-text" id="out-schicksalszahl">—</p>
+              </div>
+            </div>
+
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Herzzahl</h6>
+                <p class="card-text" id="out-herzzahl">—</p>
+              </div>
+            </div>
+
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Persönlichkeitszahl</h6>
+                <p class="card-text" id="out-persoenlichkeit">—</p>
+              </div>
+            </div>
+
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Machtzahl</h6>
+                <p class="card-text" id="out-machtzahl">—</p>
+              </div>
+            </div>
+
+            <div class="card mb-2">
+              <div class="card-body text-center">
+                <h6 class="card-title">Herausforderungen</h6>
+                <svg viewBox="0 0 200 220" class="tri-svg" aria-label="Herausforderungen">
+                  <path class="tri-line" d="M55 40 L95 200" />
+                  <path class="tri-line" d="M145 40 L105 200" />
+                  <path class="tri-line" d="M70 75 L100 110 L130 75" />
+                  <path class="tri-line" d="M100 130 L100 165" />
+                  <circle class="num-circle" cx="70" cy="75" r="20" />
+                  <text class="num-text" id="ch-1" x="70" y="75">–</text>
+                  <circle class="num-circle" cx="130" cy="75" r="20" />
+                  <text class="num-text" id="ch-2" x="130" y="75">–</text>
+                  <circle class="num-circle" cx="100" cy="120" r="20" />
+                  <text class="num-text" id="ch-3" x="100" y="120">–</text>
+                  <circle class="num-circle" cx="100" cy="175" r="20" />
+                  <text class="num-text" id="ch-4" x="100" y="175">–</text>
+                  <!-- <text class="tri-label" x="100" y="210" text-anchor="middle">MONAT&nbsp;TAG&nbsp;JAHR</text> -->
+                </svg>
+              </div>
+            </div>
+
           </div>
-        </div>
 
-        <div class="card mb-2">
-          <div class="card-body">
-            <h6 class="card-title">Schicksalszahl</h6>
-            <p class="card-text" id="out-schicksalszahl">—</p>
+          <!-- MIDDLE COLUMN -->
+          <div class="col-4">
+
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Karmische Leiste</h6>
+                <p class="card-text" id="out-karmic" style="font-family:monospace;white-space:pre">—</p>
+                <small class="text-muted">
+                  Talent: <strong><span id="out-talent">—</span></strong>
+                  &nbsp;|&nbsp;
+                  Laster: <strong><span id="out-laster">—</span></strong>
+                </small>
+              </div>
+            </div>
+
+            <div class="card mb-2">
+              <div class="card-body text-center">
+                <h6 class="card-title">Höhepunkte</h6>
+                <!-- Λ triangle: top=p4, middle=p3, bottom-left=p1, bottom-right=p2 -->
+                <svg viewBox="0 0 200 220" class="tri-svg" aria-label="Höhepunkte">
+                  <path class="tri-line" d="M60 200 L100 35 L140 200" />
+                  <path class="tri-line" d="M100 55 L100 175" />
+                  <path class="tri-line" d="M100 145 L75 175" />
+                  <path class="tri-line" d="M100 145 L125 175" />
+                  <circle class="num-circle" cx="100" cy="55" r="20" />
+                  <text class="num-text" id="pk-1" x="100" y="55">–</text>
+                  <circle class="num-circle" cx="100" cy="115" r="20" />
+                  <text class="num-text" id="pk-2" x="100" y="115">–</text>
+                  <circle class="num-circle" cx="75" cy="175" r="20" />
+                  <text class="num-text" id="pk-3" x="75" y="175">–</text>
+                  <circle class="num-circle" cx="125" cy="175" r="20" />
+                  <text class="num-text" id="pk-4" x="125" y="175">–</text>
+                  <!-- <text class="tri-label" x="100" y="210" text-anchor="middle">MONAT&nbsp;TAG&nbsp;JAHR</text> -->
+                </svg>
+              </div>
+            </div>
+
           </div>
-        </div>
 
-        <div class="card mb-2">
-          <div class="card-body">
-            <h6 class="card-title">Herzzahl</h6>
-            <p class="card-text" id="out-herzzahl">—</p>
+          <!-- RIGHT COLUMN -->
+          <div class="col-4">
+
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Lebenszahl</h6>
+                <p class="card-text" id="out-lebenszahl">—</p>
+              </div>
+            </div>
+
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Einstellungszahl</h6>
+                <p class="card-text" id="out-einstellungszahl">—</p>
+              </div>
+            </div>
+
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Jahreszahl</h6>
+                <p class="card-text" id="out-jahreszahl">—</p>
+              </div>
+            </div>
+
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Bedürfnisebene</h6>
+                <p class="card-text" id="out-beduerfnisebene" style="font-family:monospace;white-space:pre">—</p>
+              </div>
+            </div>
+
           </div>
-        </div>
-
-        <div class="card mb-2">
-          <div class="card-body">
-            <h6 class="card-title">Persönlichkeitszahl</h6>
-            <p class="card-text" id="out-persoenlichkeit">—</p>
-          </div>
-        </div>
-
-        <div class="card mb-2">
-          <div class="card-body">
-            <h6 class="card-title">Machtzahl</h6>
-            <p class="card-text" id="out-machtzahl">—</p>
-          </div>
-        </div>
-
-        <div class="card mb-2">
-          <div class="card-body text-center">
-            <h6 class="card-title">Herausforderungen</h6>
-            <svg viewBox="0 0 200 220" class="tri-svg" aria-label="Herausforderungen">
-              <path class="tri-line" d="M55 40 L95 200" />
-              <path class="tri-line" d="M145 40 L105 200" />
-              <path class="tri-line" d="M70 75 L100 110 L130 75" />
-              <path class="tri-line" d="M100 130 L100 165" />
-              <circle class="num-circle" cx="70"  cy="75"  r="20" />
-              <text class="num-text" id="ch-1" x="70"  y="75" >–</text>
-              <circle class="num-circle" cx="130" cy="75"  r="20" />
-              <text class="num-text" id="ch-2" x="130" y="75" >–</text>
-              <circle class="num-circle" cx="100" cy="120" r="20" />
-              <text class="num-text" id="ch-3" x="100" y="120">–</text>
-              <circle class="num-circle" cx="100" cy="175" r="20" />
-              <text class="num-text" id="ch-4" x="100" y="175">–</text>
-              <!-- <text class="tri-label" x="100" y="210" text-anchor="middle">MONAT&nbsp;TAG&nbsp;JAHR</text> -->
-            </svg>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- MIDDLE COLUMN -->
-      <div class="col-4">
-
-        <div class="card mb-2">
-          <div class="card-body">
-            <h6 class="card-title">Karmische Leiste</h6>
-            <p class="card-text" id="out-karmic" style="font-family:monospace;white-space:pre">—</p>
-            <small class="text-muted">
-              Talent: <strong><span id="out-talent">—</span></strong>
-              &nbsp;|&nbsp;
-              Laster: <strong><span id="out-laster">—</span></strong>
-            </small>
-          </div>
-        </div>
-
-        <div class="card mb-2">
-          <div class="card-body text-center">
-            <h6 class="card-title">Höhepunkte</h6>
-            <!-- Λ triangle: top=p4, middle=p3, bottom-left=p1, bottom-right=p2 -->
-            <svg viewBox="0 0 200 220" class="tri-svg" aria-label="Höhepunkte">
-              <path class="tri-line" d="M60 200 L100 35 L140 200" />
-              <path class="tri-line" d="M100 55 L100 175" />
-              <path class="tri-line" d="M100 145 L75 175" />
-              <path class="tri-line" d="M100 145 L125 175" />
-              <circle class="num-circle" cx="100" cy="55"  r="20" />
-              <text class="num-text" id="pk-1" x="100" y="55" >–</text>
-              <circle class="num-circle" cx="100" cy="115" r="20" />
-              <text class="num-text" id="pk-2" x="100" y="115">–</text>
-              <circle class="num-circle" cx="75"  cy="175" r="20" />
-              <text class="num-text" id="pk-3" x="75"  y="175">–</text>
-              <circle class="num-circle" cx="125" cy="175" r="20" />
-              <text class="num-text" id="pk-4" x="125" y="175">–</text>
-              <!-- <text class="tri-label" x="100" y="210" text-anchor="middle">MONAT&nbsp;TAG&nbsp;JAHR</text> -->
-            </svg>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- RIGHT COLUMN -->
-      <div class="col-4">
-
-        <div class="card mb-2">
-          <div class="card-body">
-            <h6 class="card-title">Lebenszahl</h6>
-            <p class="card-text" id="out-lebenszahl">—</p>
-          </div>
-        </div>
-
-        <div class="card mb-2">
-          <div class="card-body">
-            <h6 class="card-title">Einstellungszahl</h6>
-            <p class="card-text" id="out-einstellungszahl">—</p>
-          </div>
-        </div>
-
-        <div class="card mb-2">
-          <div class="card-body">
-            <h6 class="card-title">Jahreszahl</h6>
-            <p class="card-text" id="out-jahreszahl">—</p>
-          </div>
-        </div>
-
-        <div class="card mb-2">
-          <div class="card-body">
-            <h6 class="card-title">Bedürfnisebene</h6>
-            <p class="card-text" id="out-beduerfnisebene" style="font-family:monospace;white-space:pre">—</p>
-          </div>
-        </div>
-
-      </div>
 
         </div><!-- /.row results -->
       </div><!-- /#tab-1 -->
 
-      <div class="tab-pane" role="tabpanel" id="tab-2">
-        <p class="text-muted">Kommt noch.</p>
+      <div class="tab-pane active" role="tabpanel" id="tab-2">
+
+        <!-- Results -->
+        <div class="row g-3 d-none" id="results2">
+          <!-- Lebensschlusszahl-->
+          <div class="col-12">
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Lebensschlusszahl</h6>
+                <p class="card-text" id="k-lebenszahl">—</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- LEFT -->
+          <div class="col-4">
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Geist / Wille / Ego</h6>
+                <p class="card-text" id="k-geist">—</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- MIDDLE -->
+          <div class="col-4">
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Seele / Gefühl</h6>
+                <p class="card-text" id="k-seele">—</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT -->
+          <div class="col-4">
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Irdisches Karma / Berufung</h6>
+                <p class="card-text" id="k-erdkarma">—</p>
+              </div>
+            </div>
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Begleitzahl</h6>
+                <p class="card-text" id="k-begleiter">—</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-8 offset-2">
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Lebensthema</h6>
+                <p class="card-text" id="k-lebensthema">—</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-8 offset-2">
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Lösungsweg</h6>
+                <p class="card-text" id="k-loesungsweg">—</p>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-4">
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Karma</h6>
+                <p class="card-text" id="k-karma">—</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Aufgabe / Ziel</h6>
+                <p class="card-text" id="k-task">—</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card mb-2">
+              <div class="card-body">
+                <h6 class="card-title">Embryo</h6>
+                <p class="card-text" id="k-embryo">—</p>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.row results2 -->
       </div><!-- /#tab-2 -->
 
     </div><!-- /.tab-content -->
@@ -231,11 +355,11 @@
   <script src="assets/bootstrap/js/bootstrap.min.js"></script>
   <script>
     const charMap = {
-      a:1, b:2, c:3, d:4, e:5, f:6, g:7, h:8, i:9,
-      j:1, k:2, l:3, m:4, n:5, o:6, p:7, q:8, r:9,
-      s:1, t:2, u:3, v:4, w:5, x:6, y:7, z:8,
-      '0':0, '1':1, '2':2, '3':3, '4':4,
-      '5':5, '6':6, '7':7, '8':8, '9':9
+      a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9,
+      j: 1, k: 2, l: 3, m: 4, n: 5, o: 6, p: 7, q: 8, r: 9,
+      s: 1, t: 2, u: 3, v: 4, w: 5, x: 6, y: 7, z: 8,
+      '0': 0, '1': 1, '2': 2, '3': 3, '4': 4,
+      '5': 5, '6': 6, '7': 7, '8': 8, '9': 9
     };
 
     const masterNumbers = [11, 22, 33];
@@ -269,10 +393,25 @@
       if (el) el.textContent = (value == null) ? '—' : String(value);
     }
 
+    function calculateAll() {
+      calculate();
+      calcKabbalah();
+    }
+
+    function resetAll() {
+      document.getElementById('name').value = '';
+      document.getElementById('surname').value = '';
+      document.getElementById('dob').value = '';
+      document.getElementById('results').classList.add('d-none');
+      document.getElementById('results2').classList.add('d-none');
+    }
+
     function calculate() {
-      const name    = document.getElementById('name').value.trim().toLowerCase().replace(/\s/g, '');
+      const name = document.getElementById('name').value.trim().toLowerCase().replace(/\s/g, '');
       const surname = document.getElementById('surname').value.trim().toLowerCase().replace(/\s/g, '');
-      const [year, month, day] = document.getElementById('dob').value.split('-').map(Number);
+      const dobVal = document.getElementById('dob').value;
+      if (!name || !surname || !dobVal) return;
+      const [year, month, day] = dobVal.split('-').map(Number);
       document.getElementById('results').classList.remove('d-none');
 
       // Life Path
@@ -293,7 +432,7 @@
       set('out-jahreszahl', `${currentYear} → ${personalYear}`);
 
       // Name / Destiny
-      const nameVal    = reduce(numSum(name));
+      const nameVal = reduce(numSum(name));
       const surnameVal = reduce(numSum(surname));
       set('out-name', `${name}: ${numSum(name)} → ${nameVal}\n${surname}: ${numSum(surname)} → ${surnameVal}`);
       const destiny = reduce(nameVal + surnameVal);
@@ -314,9 +453,9 @@
       set('out-machtzahl', `${lifePath} + ${destiny} = ${lifePath + destiny} → ${might}`);
 
       // Challenge Numbers → V triangle: top-left=c1, top-right=c2, middle=c3, bottom=c4
-      const rDay   = reduce(numSum(day));
+      const rDay = reduce(numSum(day));
       const rMonth = reduce(numSum(month));
-      const rYear  = reduce(numSum(year));
+      const rYear = reduce(numSum(year));
       const c1 = Math.abs(rMonth - rDay);
       const c2 = Math.abs(rDay - rYear);
       const c3 = Math.abs(c1 - c2);
@@ -364,6 +503,52 @@
       ].join('\n');
       set('out-beduerfnisebene', beduerfnis);
     }
+
+    function calcKabbalah() {
+      const dobVal = document.getElementById('dob').value;
+      if (!dobVal) return;
+      const [year, month, day] = dobVal.split('-').map(Number);
+      document.getElementById('results2').classList.remove('d-none');
+
+      // Lebenszahl (Lebensabschlusszahl)
+      const lzTotal = numSum(day) + numSum(month) + numSum(year);
+      const lebenszahl = reduce(lzTotal);
+      set('k-lebenszahl', `${numSum(day)}+${numSum(month)}+${numSum(year)} = ${lzTotal} → ${lebenszahl}`);
+
+      // Erdliches Karma / Berufung
+      const ekTotal = numSum(year);
+      set('k-erdkarma', `${ekTotal} → ${reduce(ekTotal)}`);
+
+      // Begleitnummer (last two digits of year)
+      set('k-begleiter', year % 100);
+
+      // Disposition
+      const yearStr = String(year);
+      const [d0, d1, d2, d3] = yearStr.split('').map(Number);
+
+      const v1 = day + month;
+      const v2 = v1 + d0;
+      const v3 = v2 + d1;
+      const v4 = v3 + d2;
+      const v5 = v4 + d3;
+      const solution = day + numSum(v1) + numSum(v2) + numSum(v3) + numSum(v4) + numSum(v5);
+      set('k-solution', `${solution} → ${numSum(solution)}`);
+
+      set('k-geist', day);
+      set('k-seele', month);
+      set('k-lebensthema', `${day}+${month}=${v1}+${d0}=${v2}+${d1}=${v3}+${d2}=${v4}+${d3}=${v5}`);
+      set('k-loesungsweg', `${day}+${numSum(v1)}+${numSum(v2)}+${numSum(v3)}+${numSum(v4)}+${numSum(v5)} = ${solution} → ${numSum(solution)}`);
+
+      const karma = day + numSum(v1) + numSum(v2);
+      set('k-karma', `${day}+${numSum(v1)}+${numSum(v2)} = ${karma} → ${reduce(karma)}`);
+
+      set('k-embryo', numSum(v3));
+
+      const task = numSum(v4) + numSum(v5);
+      set('k-task', `${task} → ${reduce(task)}`);
+
+    }
   </script>
 </body>
+
 </html>
