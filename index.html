@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Numerology Calculator</title>
+</head>
+<body>
+  <h1>Numerology Calculator</h1>
+
+  <label>Vorname: <input id="name" type="text"></label><br>
+  <label>Nachname: <input id="surname" type="text"></label><br>
+  <label>Tag: <input id="day" type="number" min="1" max="31"></label><br>
+  <label>Monat: <input id="month" type="number" min="1" max="12"></label><br>
+  <label>Jahr: <input id="year" type="number"></label><br><br>
+  <button onclick="calculate()">Calculate</button>
+
+  <pre id="output"></pre>
+
+  <script>
+    const charMap = {
+      a:1, b:2, c:3, d:4, e:5, f:6, g:7, h:8, i:9,
+      j:1, k:2, l:3, m:4, n:5, o:6, p:7, q:8, r:9,
+      s:1, t:2, u:3, v:4, w:5, x:6, y:7, z:8,
+      '0':0, '1':1, '2':2, '3':3, '4':4,
+      '5':5, '6':6, '7':7, '8':8, '9':9
+    };
+
+    const masterNumbers = [11, 22, 33];
+    const vowels = new Set('aeiou');
+
+    function reduce(value) {
+      while (value > 9 && !masterNumbers.includes(value)) {
+        value = String(value).split('').reduce((s, d) => s + parseInt(d), 0);
+      }
+      return value;
+    }
+
+    function numSum(value) {
+      return String(value).split('').reduce((s, c) => s + (charMap[c] ?? 0), 0);
+    }
+
+    function removeZeros(value) {
+      return parseInt(String(value).replace(/0/g, '')) || 0;
+    }
+
+    function extractVowels(str) {
+      return str.split('').filter(c => vowels.has(c)).join('');
+    }
+
+    function extractConsonants(str) {
+      return str.split('').filter(c => !vowels.has(c) && /[a-z]/.test(c)).join('');
+    }
+
+    function calculate() {
+      const name    = document.getElementById('name').value.trim().toLowerCase().replace(/\s/g, '');
+      const surname = document.getElementById('surname').value.trim().toLowerCase().replace(/\s/g, '');
+      const day     = parseInt(document.getElementById('day').value);
+      const month   = parseInt(document.getElementById('month').value);
+      const year    = parseInt(document.getElementById('year').value);
+
+      const lines = [];
+      const log = (label, value) => lines.push(`${label}: ${value}`);
+
+      // Life Path
+      const lpTotal = numSum(day) + numSum(month) + numSum(year);
+      const lifePath = reduce(lpTotal);
+      log('Lebenszahl', `${numSum(day)} + ${numSum(month)} + ${numSum(year)} = ${lpTotal} → ${lifePath}`);
+
+      // Attitude
+      const attTotal = day + month;
+      const attitude = reduce(attTotal);
+      log('Einstellungszahl', `${day} + ${month} = ${attTotal} → ${attitude}`);
+
+      // Personal Year
+      const currentYear = new Date().getFullYear();
+      const yearNoZeros = removeZeros(currentYear);
+      const pyTotal = numSum(day) + numSum(month) + numSum(yearNoZeros);
+      const personalYear = reduce(pyTotal);
+      log('Jahreszahl', `${currentYear} → ${personalYear}`);
+
+      lines.push('');
+
+      // Name / Destiny
+      const nameVal    = reduce(numSum(name));
+      const surnameVal = reduce(numSum(surname));
+      log('Vorname', `${numSum(name)} → ${nameVal}`);
+      log('Nachname', `${numSum(surname)} → ${surnameVal}`);
+      const destiny = reduce(nameVal + surnameVal);
+      log('Schicksalszahl', `${nameVal} + ${surnameVal} = ${nameVal + surnameVal} → ${destiny}`);
+
+      // Heart & Personality
+      const fullName = name + surname;
+      const heartTotal = numSum(extractVowels(fullName));
+      const heart = reduce(heartTotal);
+      log('Herzzahl', `Vokale="${extractVowels(fullName)}" → ${heartTotal} → ${heart}`);
+
+      const persTotal = numSum(extractConsonants(fullName));
+      const personality = reduce(persTotal);
+      log('Persönlichkeitszahl', `Konsonanten="${extractConsonants(fullName)}" → ${persTotal} → ${personality}`);
+
+      // Might
+      const might = reduce(lifePath + destiny);
+      log('Machtzahl', `${lifePath} + ${destiny} = ${lifePath + destiny} → ${might}`);
+
+      lines.push('');
+
+      // Challenge Numbers
+      const rDay   = reduce(numSum(day));
+      const rMonth = reduce(numSum(month));
+      const rYear  = reduce(numSum(year));
+      const c1 = Math.abs(rMonth - rDay);
+      const c2 = Math.abs(rDay - rYear);
+      const c3 = Math.abs(c1 - c2);
+      const c4 = Math.abs(rMonth - rYear);
+      log('Herausforderungen', `${c1} | ${c2} | ${c3} | ${c4}`);
+
+      // Pinnacle Numbers
+      const p1 = numSum(rDay + rMonth);
+      const p2 = numSum(rDay + rYear);
+      const p3 = numSum(p1 + p2);
+      const p4 = numSum(rMonth + rYear);
+      log('Höhepunkte', `${p1} | ${p2} | ${p3} | ${p4}`);
+
+      lines.push('');
+
+      // Karmic Line
+      const numbers = fullName.split('').map(c => charMap[c] ?? null).filter(n => n !== null);
+      const count = {};
+      for (let i = 1; i <= 9; i++) count[i] = numbers.filter(n => n === i).length;
+
+      const maxCount = Math.max(...Object.values(count));
+      const talent = Object.keys(count).find(k => count[k] === maxCount);
+      const lessons = Object.keys(count).filter(k => count[k] === 0).map(Number);
+      const lessonsSum = lessons.reduce((s, n) => s + n, 0);
+      const lessonsReduced = reduce(lessonsSum);
+
+      lines.push('Karmische Leiste:');
+      for (let i = 1; i <= 9; i++) lines.push(`  ${i}: ${'●'.repeat(count[i]) || '-'} (${count[i]})`);
+      log('  Talent', talent);
+      log('  Laster', `${lessons.join(', ')} → Summe ${lessonsSum} → ${lessonsReduced}`);
+      lines.push('');
+      log('  Bedürfnisebene — Mentos (1+8)',    count[1] + count[8]);
+      log('  Bedürfnisebene — Physis (4+5)',    count[4] + count[5]);
+      log('  Bedürfnisebene — Emotion (2+3+6)', count[2] + count[3] + count[6]);
+      log('  Bedürfnisebene — Intuition (7+9)', count[7] + count[9]);
+
+      document.getElementById('output').textContent = lines.join('\n');
+    }
+  </script>
+</body>
+</html>
